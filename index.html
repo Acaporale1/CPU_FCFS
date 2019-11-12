@@ -30,6 +30,7 @@
             border: 2px solid green;
             cursor: pointer;
             /*clear:both;*/
+            float:left;
            
         }
 
@@ -85,6 +86,7 @@
             border: 2px solid #8B0000;
             cursor: pointer;
             /*clear:left;*/
+            float: right;
         }
 
 
@@ -264,20 +266,20 @@
         function run(){
             //loading the burst times into an array
             intoTheArray();
-            //alert(bt);
             
-            if(bt.some(v=>v<0)|| bt.some(v=>v= 'null') )
+            
+            if((bt.some(v=>v<0)) || (bt.some(v=>v == "")))
                 {
                alert("Make sure the following conditions are satisfied:\n1. Each process has a burst time\n2. Burst times can not have a negative value.\n\nTry again...");
                 }
             else{
-            //loading waiting times into an array & calculating avg wait time
-            waitingTimes();
-            //calculating completion(turnaround) times, loading into an array, then calc avg turnaround time
-            completiontime();
-            //make the gantt chart
-            ganttChart();
-            }
+                //loading waiting times into an array & calculating avg wait time
+                waitingTimes();
+                //calculating completion(turnaround) times, loading into an array, then calc avg turnaround time
+                completiontime();
+                //make the gantt chart
+                ganttChart();
+                }
             
         }
 
@@ -302,11 +304,11 @@
     <br>
     <div id="container"class="container" style ="float:left; position= relative"></div>
     <br>
-    <div>
+    <div align=center style ="width: 350px">
     <button class ="buttonSubmit" id="runB" type="button" onclick="run()" style="display:none">RUN</button>
-    <br>
     <button type="submit" class="refresh"  id ="refresh" onClick="refreshPage()" style="display:none">START OVER</button>
     </div>
+    <br>
     <br>
     <p class = "textfield" id ="ganttlabel"></p>
     <div class ="timeline" id="timeline"></div>
