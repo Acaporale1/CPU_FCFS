@@ -1,0 +1,303 @@
+<html>
+<!-- *****Reference to a font from Google API to make my text pretty :) *****-->
+<link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+<head>
+    <title>First Come First Serve</title>
+    <style>
+
+        body{
+            background-color: 
+            font-family: "Gill Sans",sans-serif;
+            font-size: 14pt;
+        }
+        .textfield{
+            font-family: "Gill Sans",sans-serif;
+            font-size: 14pt;
+        }
+
+        .timeline{
+            height: 100px;
+            width: 950px;
+            font-size: 14pt;
+           /* background-color: lightblue;*/
+        }
+
+        .buttonSubmit{
+            font-size: 24pt;
+            color:white;
+            background-color: #4CAF50;
+            border-radius: 8px;
+            border: 2px solid green;
+            cursor: pointer;
+            /*clear:both;*/
+           
+        }
+
+        .buttonInsert{
+            font-size: 16pt;
+            color:white;
+            background-color: #0160EE;
+            border: 2px solid #0349B2;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .buttonRandomize{
+            font-size: 16pt;
+            color:white;
+            background-color: #A933FF;
+            border: 2px solid #6B03C1;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .avgStyles{
+            font-family: "Gill Sans",sans-serif;
+            width: 350px;
+            padding: 10px;
+            padding-left: 10px;
+            background-color: #F6F8F7;
+            box-shadow: 0px 10px 13px -7px #000000, 0px 0px 13px 8px rgba(0,0,0,0);
+            /*border: solid;
+            border-radius: 2px;*/
+        }
+
+        .container{
+            font-size: 16pt;
+            font-family: "Gill Sans",sans-serif;
+            /*margin-bottom: 20px;*/
+            background-color: #F6F8F7;
+            box-shadow: 0px 10px 13px -7px #000000, 0px 0px 13px 8px rgba(0,0,0,0);
+            width:400px;
+        }
+
+        .fcfs{
+        /*font-size: 36pt;*/ 
+        font-family: 'Oleo Script',cursive;
+        font-size: 48px;    
+        }
+
+        .refresh{
+            font-size: 24pt;
+            color:white;
+            background-color: red;
+            border-radius: 8px;
+            border: 2px solid #8B0000;
+            cursor: pointer;
+            /*clear:left;*/
+        }
+
+
+    </style>
+
+    <!-- *****Google Chart API was used to make the gantt chart***** -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type='text/javascript'>
+        google.charts.load('current', {'packages':['timeline']});
+         // Number of inputs to create
+        var number;
+       
+        //Array for burst times
+        var bt = [];
+        //Array for waiting times
+        var wt = [];
+        //Array for completion times
+        var ct = [];
+        //Average waiting time
+        var avgWT;
+        //Average turnaround time
+        var avgTTT;
+
+
+        function getFieldCount()
+        //To figure out how many text fields to generate**BASED ON USER INPUT
+        {
+         number = document.getElementById("process").value;
+         if (number>10)
+            //Our max amount of processes is 10
+            alert("Sorry I can only handle 10 processes at a time...Try Again :)");
+        else
+           addFields(); 
+        }
+        
+        function addFields(){
+
+            // Container <div> where dynamic input fields will be placed
+            var container = document.getElementById("container");
+            container.style="align:center";
+            // Clear previous contents of the container if you change input field number
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            container.appendChild(document.createElement("br"));
+            for (i=0;i<number;i++){
+                // Append a text node denoting each process num
+                container.appendChild(document.createTextNode("Process " + (i+1)+"  "));
+                // Create an <input> element, set its type and id attributes
+                var input = document.createElement("input");
+                input.type = "text";
+                input.id = "process" + (i+1);
+                container.appendChild(input);
+                input.style="font-size:14pt";
+                // Append a line break 
+                container.appendChild(document.createElement("br"));
+                container.appendChild(document.createElement("br"));
+
+                document.getElementById("runB").style.display = "block";
+                document.getElementById("refresh").style.display = "block";
+                document.getElementById("randomB").style.display = "block";
+            }
+        }
+        function intoTheArray(){
+
+            // alert ("Number of processes: "+number);
+
+            // alert("console log of p1");
+            // console.log(document.getElementById("process1").value);
+
+            // alert("PROCESS 1: "+ document.getElementById("process1").value);
+
+            // alert("trying to make the array of burst times...");
+
+            bt=[];
+
+            for(i=0;i<number;i++)
+            {
+                bt[i]=document.getElementById("process"+(i+1)).value;
+            }
+            // alert("Array of burst times: "+ bt);
+            // document.getElementById("arraytest").innerHTML = "BURST TIME ARRAY: "+bt;
+        }
+
+        function randomizeTimes(){
+           
+            for(i=0;i<number;i++)
+            {
+                //random burst time between 1 and 10000
+                document.getElementById("process"+(i+1)).value = Math.floor(Math.random() * 10000);
+            }
+        }
+
+        function waitingTimes()
+        {    
+        wt[0]=0;
+            for (i=1;i<number;i++)
+            {
+                //wt[0]=0;
+
+                 wt[i]= parseInt(wt[i-1]) + parseInt(bt[i-1]);
+                 
+            }
+             alert(wt);
+             //find avg waiting times
+            var sum=0;
+            for (i =0;i<wt.length;i++)
+            {
+                sum +=parseInt(wt[i]);
+            }
+            avgWT=sum/wt.length;
+            alert("average = " + avgWT);
+        }
+
+        function completiontime()
+        {
+            ct[0] = bt[0];
+            for (i=1;i<number;i++)
+            {
+                ct[i] = parseInt(bt[i]) + parseInt(ct[i-1]);
+            }
+
+            //find avg turnaround times
+            var sum=0;
+            for (i =0;i<ct.length;i++)
+            {
+                sum +=parseInt(ct[i]);
+            }
+            avgTTT=sum/ct.length;
+            alert("average = " + avgTTT);
+        }
+
+        function run(){
+            //loading the burst times into an array
+            intoTheArray();
+            //loading waiting times into an array & calculating avg wait time
+            waitingTimes();
+            //calculating completion(turnaround) times, loading into an array, then calc avg turnaround time
+            completiontime();
+
+        var timeline = document.getElementById('timeline');
+        var chart = new google.visualization.Timeline(timeline);
+        var dataTable = new google.visualization.DataTable();
+
+
+        dataTable.addColumn({ type: 'string', id: 'term' });
+        dataTable.addColumn({ type: 'string', id: 'name' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+
+        document.getElementById("ganttlabel").innerHTML= "GANTT CHART:";
+        //adding the first process to the gantt chart
+                                                    //0,0,0,0,0,0,x ---> year month, day, hours, minutes,seconds, miliseconds
+        dataTable.addRow(['Runtime',"P" +(1),new Date(0,0,0,0,0,0,parseInt(wt[0])),new Date(0,0,0,0,0,0,parseInt(ct[0]))]);
+
+        //adding p2 -> 'N' rows to gantt chart
+       for(i=1;i<number;i++)
+       {
+        dataTable.addRow(['Runtime',"P" +(i+1),new Date(0,0,0,0,0,0,parseInt(ct[i-1])),new Date(0,0,0,0,0,0,parseInt(ct[i]))]);
+       }
+
+        
+        var options = {
+        timeline: { showRowLabels: false }};
+
+        var option2 = {
+            timeline:{groupByRowLabel: false}
+        };
+
+        //draw the gantt chart
+        chart.draw(dataTable,options,option2);
+
+        //alert("completion times: "+ ct);
+
+        //when gantt chart is made, calculate and show the average waiting time and average turnaround times
+        document.getElementById("avgSyle").style.display = "block";
+        document.getElementById("valuesWT").innerHTML= "Average Waiting Time: " + avgWT +"ms";
+        document.getElementById("valuesTTT").innerHTML= "Average Turnaround Time: " + avgTTT+"ms";
+        }
+
+        function refreshPage(){
+
+        window.location.reload();
+        } 
+
+    </script>
+
+</head>
+<body>
+    <!-- <p id = "arraytest"></p> -->
+<div align ="center">
+    <label id="fcfs" class="fcfs">First Come First Serve</label>
+    <br>
+    <label class ="textfield">Enter The Number Of Processes: (Max. 10)&nbsp&nbsp</label>
+        <input type="text" id="process" class="textfield" name="process" value="">&nbsp&nbsp
+    <button class ="buttonInsert" type="button" onclick="getFieldCount()">INSERT</button>
+    <br><br>
+    <button class ="buttonRandomize" type="button" id = "randomB"onclick="randomizeTimes()" style="display: none">RANDOMIZE TIMES</button>
+    <br>
+    <div id="container"class="container" style ="float:left; position= relative"></div>
+    <br>
+    <div>
+    <button class ="buttonSubmit" id="runB" type="button" onclick="run()" style="display:none">RUN</button>
+    <br>
+    <button type="submit" class="refresh"  id ="refresh" onClick="refreshPage()" style="display:none">START OVER</button>
+    </div>
+    <br>
+    <p class = "textfield" id ="ganttlabel"></p>
+    <div class ="timeline" id="timeline"></div>
+    <div class = "avgStyles" id="avgSyle" style="display: none">
+    <p id="valuesWT"></p>
+    <p id="valuesTTT"></p>
+    </div>
+</div>
+</body>
+</html>
