@@ -33,7 +33,7 @@ Launch the FCFS.html document to open the simulator.
 
 ## Authors
 
-* **Alana Caporale** - *Final Work* -(https://github.com/Acaporale1/CPU_FCFS)
+* **Alana Caporale** - *Final Work* -(https://acaporale1.github.io/CPU_FCFS/)
 
 ## Acknowledgments
 
