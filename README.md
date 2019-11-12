@@ -18,8 +18,7 @@ Launch the FCFS.html document to open the simulator.
 	**NOTE: This program allows a max of 10 processes at a time**
 2. Press the 'Insert' button to generate the amount of processes previously specified.
 3. Assign a burst time (in milliseconds) to each process in the corresponding input field.
-3. a. If random burst times are desired, click the 'RANDOMIZE TIMES' button.
-	**NOTE: Random burst times are assigned a value between 1 and 10,000 (inclusive)
+	**NOTE: If random burst times are desired, click the 'RANDOMIZE TIMES' button. Random burst times are assigned a value between 1 and 10,000 (inclusive)**
 4. Once all processes are assigned a burst time, click the 'RUN' button to execute the algorithm.
 5. Upon completion, a Gantt Chart will be constructed based on the prior input. In addition, the average waiting time and average turnaroud time is calculated.
 	**NOTE: Due to varying screen size, you may need to scroll down the page to view the chart and calculated time**
