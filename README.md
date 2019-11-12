@@ -4,7 +4,7 @@ The goal of this project is to implement the First Come First Serve Algorithm. W
 
 ## Getting Started
 
-Launch the FCFS.html document to open the simulator.
+Launch the index.html document to open the simulator.
 
 ### Prerequisites
 
