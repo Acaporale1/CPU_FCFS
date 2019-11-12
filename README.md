@@ -22,7 +22,8 @@ Launch the FCFS.html document to open the simulator.
 4. Once all processes are assigned a burst time, click the 'RUN' button to execute the algorithm.
 5. Upon completion, a Gantt Chart will be constructed based on the prior input. In addition, the average waiting time and average turnaroud time is calculated.
 	**NOTE: Due to varying screen size, you may need to scroll down the page to view the chart and calculated time**
-6. If you wish to reset the page to its original state, click the 'START OVER' button.
+6. To get a more in-depth look at the duration of each process, hover over the process on the Gantt Chart.
+7. If you wish to reset the page to its original state, click the 'START OVER' button.
 
 
 ## Built With
